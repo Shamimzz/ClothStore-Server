@@ -105,7 +105,7 @@ async function run () {
 
 
     // Delete Items from the ADmin pannel.............  
-    app.delete('/adminPannel/:id', async (req, res)=>{
+    app.delete('/adminPannel/:key', async (req, res)=>{
         const query = {key: req.body.key};
         console.log(query);
         const result = await confirmOrders.deleteOne(query);
