@@ -144,12 +144,6 @@ async function run () {
     //   }
 
    })
-  
-  
-
-
-
-
 
 
   app.get('/checkAdmin/:email', async(req, res)=>{
@@ -163,6 +157,27 @@ async function run () {
   })
 
   
+
+  
+  // manage Products on admin dashboard.................................
+  app.get('/productManagement', async (req, res)=> {  
+    const result = await ProductsCollect.find({}).toArray();
+    res.send(result);
+  })
+
+
+  // Delete Products from Admin DashBoard........................
+  app.delete('/productManagement/:key', async (req, res)=> {
+    const key = req.params.key;
+    const result = await ProductsCollect.deleteOne({key});
+    console.log(result);
+    res.send(result);
+  })
+
+
+  
+
+
 
 
 
