@@ -30,7 +30,7 @@ async function run () {
        const OrderCollection = database.collection("Orders"); 
       const UserInformation = database.collection("UserInformation");
       const ReviewCollection = database.collection("ReviewCollection");
-      const AdminCollection = database.collection("AdminCollection");
+      // const AdminCollection = database.collection("AdminCollection");
 
        
    // Geting data from Database API................................
@@ -97,7 +97,7 @@ async function run () {
    })
 
 
-   // make admin by email address......................................
+   // make admin by email address.......................................
    app.put('/makeAdmin', async (req, res)=>{
      const filter = {email: req.body.email};
      const result = await UserInformation.updateOne(filter,{
@@ -109,20 +109,20 @@ async function run () {
 
 
    // Add  review.................. 
-   // review products......... ......................
+   // review products......... ........................................
    app.post('/reviewInserting', async (req, res) => {
     const result = await ReviewCollection.insertOne(req.body);
     res.json(result);
   })
   
-  // show review on ui review section.................... 
+  // show review on ui review section.................................
   app.get('/reviews', async (req, res)=> {  
     const result = await ReviewCollection.find({}).toArray();
     res.send(result);
   })
 
 
-  // inserting Services on database................ 
+  // inserting Services on database...................................
   app.post('/addServiceInserting', async (req, res) => {
     const result = await ProductsCollect.insertOne(req.body);
     res.json(result);
@@ -130,19 +130,12 @@ async function run () {
 
   
 
-  // Show admins in makeadmin page....................................
-  app.get('/admin', async (req, res)=>{
-    //  console.log(query);
-    const result = await UserInformation.find({}).toArray();
+   // Show admins in makeadmin page....................................
+   app.get('/admin', async (req, res)=>{
+    const query = { role: { $regex: "admin" } };
+    const result = await UserInformation.find(query).toArray();
     res.send(result);
-
-    //  const query = req.body.role;
-    //  if(query?.role === 'admin'){
-    //   const result = await UserInformation.find({}).toArray();
-    //    res.send(result);
-    //    console.log(result);
-    //   }
-
+    console.log(result);
    })
 
 
@@ -157,8 +150,6 @@ async function run () {
   })
 
   
-
-  
   // manage Products on admin dashboard.................................
   app.get('/productManagement', async (req, res)=> {  
     const result = await ProductsCollect.find({}).toArray();
@@ -166,7 +157,7 @@ async function run () {
   })
 
 
-  // Delete Products from Admin DashBoard........................
+  // Delete Products from Admin DashBoard...............................
   app.delete('/productManagement/:key', async (req, res)=> {
     const key = req.params.key;
     const result = await ProductsCollect.deleteOne({key});
@@ -175,133 +166,12 @@ async function run () {
   })
 
 
-  
-
-
-
-
-
-
-    // Show products in shipping page................... ..
-    // app.get('/ConfirmOrder/:id', async (req, res)=> {
-    //   const id = {_id : ObjectId(req.params.id)};
-    //   console.log(req.params.id);
-    //   const result = await OrderCollection.find(id).toArray();
-    //   console.log(result);
-    //   res.send(result[0]);
-    // }) 
-
-
-
-
-
-   // const checkdata = await  ProductsCollect.findOne(query);
-   // if(checkdata){
-   //    res.json('Product ALready Exist!');
-   // }else{
-   //   const result = await ProductsCollect.insertOne(query);
-   //   res.send(result[0]);
-   // }
-
-
-
-    
-    // // Inserting Product to OrderCollection........... 
-    // app.post('/addToCart', async (req, res)=>{
-    //     const query = {key:req.body.key}
-    //     const checkdata = await  OrderCollection.findOne(query);
-    //     if(checkdata){
-    //        res.json('Product ALready Exist!');
-    //     }else{
-    //      const result = await OrderCollection.insertOne(req.body);
-    //      res.send(result);
-    //     }
-    // })
-
-
-
-    // // Getting OrderCollection Data for Showing annother Route. 
-    // app.get('/orderCollection/:email', async (req, res)=>{ 
-    //     const email = { email: req.params.email };
-    //       const result = await OrderCollection.find(email).toArray();
-    //       res.send(result);
-    //     }
-    // )
-
-
-    // // Cancel Product from Order List...............
-    // app.delete("/deleted/:key", async (req, res) => {
-    //    const key = req.params.key;
-    //    const result = await OrderCollection.deleteOne({key});
-    //     res.send(result);
-    //   });
-
-    
-
-    // // Get User information......................... 
-    // app.post('/placeorder', async (req, res) =>{
-    //     // console.log(req);
-    //     const result = await confirmOrders.insertOne(req.body);
-    //     console.log(result);
-    //     res.send(result);
-    // })
-
-
-    // // get Confirm Order Information.
-    // app.get('/confirmorder', async (req, res) =>{
-    //     const result = await confirmOrders.find({}).toArray();
-    //     console.log(result);
-    //     res.send(result);
-    // })
-
-
-    // // Add New Services To Database............... 
-    // app.post('/addServiceDB', async (req, res) =>{
-    //   const result = await ProductsCollect.insertOne(req.body);
-    //   res.send(result);
-    // })
-
-
-
-
-    // // ADmin Pannel................ 
-    // app.get('/adminPannel', async (req, res)=>{
-    //     console.log('From admin pannel', req.body)
-    //     const result = await confirmOrders.find({}).toArray();
-    //     console.log(result);
-    //     res.send(result);
-    // })
-
-
-    // // Delete Items from the ADmin pannel.............  
-    // app.delete('/adminPannel/:key', async (req, res)=>{
-    //     const query = {key: req.body.key};
-    //     console.log(query);
-    //     const result = await confirmOrders.deleteOne(query);
-    //     res.send(result);
-    // })
-
-
-    // //
-    // app.put('/adminPannel/approved/:id', async (req, res)=>{
-    //     const query = {_id: ObjectId(req.params.id)}
-    //     // console.log(query);
-    //     // const updateStatus = req.body;
-    //     const result = await confirmOrders.updateOne(query, {
-    //         $set:{
-    //             status: 'Approved'
-    //         }
-    //     });
-    //     console.log(result);
-    //     res.send(result);
-    // })
-    
-
     }
     finally {
      // await client.close();
-    }
+  }
 }
+
 run().catch(console.dir);
 
 
