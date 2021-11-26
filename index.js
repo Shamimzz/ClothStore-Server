@@ -3,7 +3,7 @@ const express = require('express');
 const app = express(); 
 const port = process.env.PORT || 5000;
 
-// for .env variable must have declare.
+// for .env variable must have declare..
 require('dotenv').config()
 
 // middlewaire................
